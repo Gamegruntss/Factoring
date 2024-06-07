@@ -1,6 +1,9 @@
 #include "factor.h"
 
-Factor::Factor(Polynomial& poly) : poly{poly} { }
+Factor::Factor(Polynomial& poly) : poly{poly}
+{
+    loadMultiplicationTable();
+}
 
 std::vector<double> Factor::roots(std::unordered_set<double>& possibleRoots)
 {
@@ -32,13 +35,23 @@ std::unordered_set<double> Factor::possibleRoots()
     Polynomial q{qVal, 'x'};
     Polynomial p{pVal, 'x'};
 
-    p.loadMultiplicationTable();
-    q.loadMultiplicationTable();
-
-    for(int i : p.factor(pInt))
-        for(int j: q.factor(qInt))
+    for(int i : p.factor(pInt, multiplicationTable))
+        for(int j: q.factor(qInt, multiplicationTable))
             possibleRoots.emplace(i/j);
 
     return possibleRoots;
 }
 
+void Factor::loadMultiplicationTable()
+{
+    size_t product;
+
+    for(size_t i = 1; i <= 1000; ++i)
+        for (size_t j = 1; j <= 1000; ++j)
+        {
+            product = i*j;
+            multiplicationTable[product].emplace(i);
+            multiplicationTable[product].emplace(j);
+        }
+
+}

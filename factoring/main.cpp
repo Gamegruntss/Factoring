@@ -3,10 +3,9 @@
 
 int main(int argc, char const *argv[])
 {
-    std::vector<int> coefficients{1,9,26,24};
+    std::vector<int> coefficients{1,24,98,-720,-2475};
     char var = 'x';
     Polynomial p{coefficients, var};
-    //std::cout << p << std::endl;
     Factor f(p);
     auto pos = f.possibleRoots();
     for(auto i: f.roots(pos))

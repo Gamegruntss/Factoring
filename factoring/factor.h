@@ -15,6 +15,8 @@ class Factor
     private:
 
     Polynomial poly;
+    std::unordered_map<size_t, std::unordered_set<size_t>> multiplicationTable;
+    void loadMultiplicationTable();
     
 
 };

@@ -12,14 +12,14 @@ std::ostream& operator<<(std::ostream& out, const Polynomial& p)
     return out;
 }
 
-std::unordered_set<int> Polynomial::factor(const int number) const
+std::unordered_set<int> Polynomial::factor(const int number, std::unordered_map<size_t, std::unordered_set<size_t>>& multTable) const
 {
     std::unordered_set<int> factors;
     int posNumber;
     if(number < 0) {posNumber = number * -1;}
     else {posNumber = number;}
-    std::unordered_map<size_t, std::unordered_set<size_t>> map{this->multiplicationTable};
-    std::unordered_set<size_t> posFactors{map[number]};
+
+    std::unordered_set<size_t> posFactors{multTable[posNumber]};
     for(size_t i: posFactors)
     {
         factors.emplace(i);
@@ -30,15 +30,5 @@ std::unordered_set<int> Polynomial::factor(const int number) const
 
 void Polynomial::loadMultiplicationTable()
 {
-    std::unordered_set<size_t> factors;
-    size_t product;
-
-    for(size_t i = 1; i <= 20; ++i)
-        for (size_t j = 1; j <= 20; ++j)
-        {
-            product = i*j;
-            multiplicationTable[product].emplace(i);
-            multiplicationTable[product].emplace(j);
-        }
-        
+    
 }
