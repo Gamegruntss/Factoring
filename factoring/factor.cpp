@@ -7,22 +7,9 @@ Factor::Factor(Polynomial& poly) : poly{poly}
 
 std::vector<double> Factor::roots(std::unordered_set<double>& possibleRoots)
 {
-    std::vector<double> roots;
-    double previousResult;
-    double result;
-    roots.reserve(possibleRoots.size());
-    if(poly.termCount == 1) return roots;
-    if(poly.termCount == 2) {roots.emplace_back(poly.coefficents.at(1) * -1);}
+    roots(poly, possibleRoots);
 
-    for(double i: possibleRoots)
-    {
-        previousResult = 1;
-        for (size_t j = 1; j < poly.termCount; ++j)
-            previousResult = poly.coefficents.at(j)+ (previousResult * i);
-            
-        if(previousResult == 0) roots.emplace_back(i);
-    }
-    return roots;
+    return allRoots;  
 }
 
 std::unordered_set<double> Factor::possibleRoots()
@@ -46,12 +33,48 @@ void Factor::loadMultiplicationTable()
 {
     size_t product;
 
-    for(size_t i = 1; i <= 1000; ++i)
-        for (size_t j = 1; j <= 1000; ++j)
+    for(size_t i = 1; i <= 200; ++i)
+        for (size_t j = 1; j <= 200; ++j)
         {
             product = i*j;
             multiplicationTable[product].emplace(i);
             multiplicationTable[product].emplace(j);
         }
 
+}
+
+void Factor::roots(Polynomial& factored, std::unordered_set<double>& possibleRoots)
+{
+    std::vector<int> factoredCoefficients;
+    double previousResult;
+    double result;
+    std::unordered_set<double> roots;
+    
+    if(factored.termCount == 1) return;
+    if(factored.termCount == 2)
+    {
+        allRoots.emplace_back(factored.coefficents.at(1) * -1);
+        return;
+    }
+
+    for(double i: possibleRoots)
+    {
+        previousResult = 1;
+        for (size_t j = 1; j < factored.termCount; ++j)
+            {
+                factoredCoefficients.push_back(static_cast<int>(previousResult));
+                previousResult = factored.coefficents.at(j)+ (previousResult * i);
+            }
+        if(previousResult == 0) 
+        {
+            allRoots.emplace_back(i);
+            factoredCoefficients.resize(factored.termCount - 1);
+            Polynomial p{factoredCoefficients,'x'};
+            this->poly = p;
+            roots = this->possibleRoots();
+            Factor::roots(p, roots);
+            return;
+        }
+        factoredCoefficients.clear();
+    }
 }

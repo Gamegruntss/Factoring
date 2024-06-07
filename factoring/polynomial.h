@@ -13,13 +13,10 @@ struct Polynomial
     char var{};
     size_t termCount{coefficents.size()};
     
-    std::unordered_map<size_t, std::unordered_set<size_t>> multiplicationTable;
-
     friend std::ostream& operator<<(std::ostream&, const Polynomial&);
 
     std::unordered_set<int> factor(const int, std::unordered_map<size_t, std::unordered_set<size_t>>&) const;
 
-    void loadMultiplicationTable();
 };
 
 #endif

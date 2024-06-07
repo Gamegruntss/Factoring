@@ -15,8 +15,11 @@ class Factor
     private:
 
     Polynomial poly;
+    std::vector<double> allRoots;
     std::unordered_map<size_t, std::unordered_set<size_t>> multiplicationTable;
     void loadMultiplicationTable();
+    void roots(Polynomial&, std::unordered_set<double>&);
+    
     
 
 };

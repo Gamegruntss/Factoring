@@ -27,8 +27,3 @@ std::unordered_set<int> Polynomial::factor(const int number, std::unordered_map<
     }    
     return factors;
 }
-
-void Polynomial::loadMultiplicationTable()
-{
-    
-}
