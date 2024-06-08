@@ -27,3 +27,18 @@ std::unordered_set<int> Polynomial::factor(const int number, std::unordered_map<
     }    
     return factors;
 }
+
+int Polynomial::at(const int val)
+{
+    int finalVal{};
+    int charTerm{};
+    int exponent{};
+
+    for (size_t i = 0; i < termCount; ++i)
+    {
+        exponent = termCount - i - 1;
+        charTerm = pow(val, exponent);
+        finalVal += coefficents.at(i) * charTerm;
+    }
+    return finalVal;
+}

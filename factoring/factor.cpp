@@ -17,10 +17,8 @@ std::unordered_set<double> Factor::possibleRoots()
     std::unordered_set<double> possibleRoots;
     int qInt{poly.coefficents.at(0)}; 
     int pInt{poly.coefficents.at(poly.termCount - 1)};
-    std::vector<int> qVal{qInt};
-    std::vector<int> pVal{pInt};
-    Polynomial q{qVal, 'x'};
-    Polynomial p{pVal, 'x'};
+    Polynomial q{{qInt}, 'x'};
+    Polynomial p{{pInt}, 'x'};
 
     for(int i : p.factor(pInt, multiplicationTable))
         for(int j: q.factor(qInt, multiplicationTable))
@@ -33,8 +31,8 @@ void Factor::loadMultiplicationTable()
 {
     size_t product;
 
-    for(size_t i = 1; i <= 200; ++i)
-        for (size_t j = 1; j <= 200; ++j)
+    for(size_t i = 1; i <= 1000; ++i)
+        for (size_t j = 1; j <= 1000; ++j)
         {
             product = i*j;
             multiplicationTable[product].emplace(i);
@@ -62,13 +60,13 @@ void Factor::roots(Polynomial& factored, std::unordered_set<double>& possibleRoo
         previousResult = 1;
         for (size_t j = 1; j < factored.termCount; ++j)
             {
-                factoredCoefficients.push_back(static_cast<int>(previousResult));
+                factoredCoefficients.push_back(previousResult);
                 previousResult = factored.coefficents.at(j)+ (previousResult * i);
             }
         if(previousResult == 0) 
         {
             allRoots.emplace_back(i);
-            factoredCoefficients.resize(factored.termCount - 1);
+            //factoredCoefficients.resize(factored.termCount - 1);
             Polynomial p{factoredCoefficients,'x'};
             this->poly = p;
             roots = this->possibleRoots();
